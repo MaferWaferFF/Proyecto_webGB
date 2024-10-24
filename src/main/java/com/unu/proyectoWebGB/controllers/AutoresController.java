@@ -1,17 +1,18 @@
 package com.unu.proyectoWebGB.controllers;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.ServerException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.unu.proyectoWebGB.beans.Autor;
 import com.unu.proyectoWebGB.models.AutoresModel;
 
-/**
- * Servlet implementation class AutoresController
- */
 public class AutoresController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -19,19 +20,19 @@ public class AutoresController extends HttpServlet {
 	
 	public AutoresController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-//reques nos sirve para recoger los parametros dentro de la lista
+/*reques nos sirve para recoger los parametros dentro de la lista*/
 	protected void processRequest(HttpServletRequest request, HttpServletResponse reponse) {
-		if (request.getParameter("op") == null) {// si tengo una opcion con op(parametro y si es nulo entonces estaria
-													// mostrandome la lista)
-			// listar()
+		if (request.getParameter("op") == null) {// si tengo una opcion con op(parametro y si es nulo entonces estaria													// mostrandome la lista)
+			listar(request, reponse);
 			return;
 		}
+		
 		String operacion = request.getParameter("op");
+		
 		switch (operacion) {
 		case "listar":
-			//listar()
+			listar(request, reponse);
 			break;
 		case "nuevo":
 			//nuevo()
@@ -40,28 +41,31 @@ public class AutoresController extends HttpServlet {
 	}
 
 	private void listar (HttpServletRequest request, HttpServletResponse reponse) {
-		//el reponse.add lo que va a hacer es cargar a la lista y despies disparar
-		request.setAttribute("listaAutores", modelo.listarAutores());
-		request.getRequestDispatcher("autores/listaAutores.jsp");
+		//el reponse.add lo que va a hacer es cargar a la lista y despues disparar
+		try {
+			request.setAttribute("listaAutores", modelo.listarAutores());
+			
+			Iterator<Autor> it = modelo.listarAutores().iterator();
+			while(it.hasNext()) {
+				Autor a = it.next();
+				System.out.println(a.getIdAutor()+" "+a.getNombre()+" "+a.getNacinalidad());
+			}
+			
+			request.getRequestDispatcher("autores/listaAutores.jsp").forward(request, reponse);
+		}catch (Exception e) {
+			Logger.getLogger(AutoresController.class.getName()).log(Level.SEVERE, null, e);
+		}
 	}
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		processRequest(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		processRequest(request, response);
 	}
 
 }
