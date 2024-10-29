@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import oracle.jdbc.driver.parser.Parseable;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -59,6 +58,9 @@ public class AutoresController extends HttpServlet {
 		case "obtener":
 			obtener(request, reponse);
 			break;
+		case "eliminar":
+			eliminar(request, reponse);
+			break;
 		}
 	}
 
@@ -101,15 +103,16 @@ public class AutoresController extends HttpServlet {
 		try {
 			Autor a = new Autor();
 			a.setIdAutor(Integer.parseInt(request.getParameter("id")));
-			a.setNombre(request.getParameter("nom"));
+			a.setNombre(request.getParameter("nombre"));
 			a.setNacinalidad(request.getParameter("nacio"));
-			if (modelo.modificarAutor(a)>0) {
+			System.out.println(modelo.modificarAutor(a));
+			/*if (modelo.modificarAutor(a)>0) {
 				request.getSession().setAttribute("exito", "Autor registrado exitosamente");
-				response.sendRedirect(request.getContextPath() + "/AutoresController?op=listar");
-			}
+			}*/
+			response.sendRedirect(request.getContextPath() + "/AutoresController?op=listar");
 		}catch (Exception e) {
 			request.getSession().setAttribute("fracaso", "Autor no registrado");
-			response.sendRedirect(request.getContextPath() + "/AutoresController?op=listar");
+			response.sendRedirect(request.getContextPath() + "/AutoresController?=listar");
 
 		}
 	}
@@ -117,7 +120,6 @@ public class AutoresController extends HttpServlet {
 	protected void obtener (HttpServletRequest request, HttpServletResponse response) throws  IOException, ServletException {
 		try {
 			String id = request.getParameter("id");
-			System.out.println("->" + id);
 			Autor a = modelo.obtenerAutor(Integer.parseInt(id));
 			if(a != null) {
 				request.setAttribute("autor", a);
@@ -131,6 +133,18 @@ public class AutoresController extends HttpServlet {
 		}
 		
 	}
+	
+	protected void eliminar (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			System.out.println("wazzza->"+id);
+			modelo.eliminarAutor(id);
+		}catch (Exception e) {
+			Logger.getLogger(AutoresController.class.getName()).log(Level.SEVERE,null,e);
+		}
+		request.getRequestDispatcher("AutoresController?op=listar").forward(request, response);
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 			processRequest(request, response);

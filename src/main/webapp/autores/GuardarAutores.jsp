@@ -18,7 +18,7 @@
 	
 	<h2>NUEVO AUTOR</h2>
 	<form role="form" action="<%=url%>AutoresController" method="POST">
-		<input type= "hidden" name= "op" value= "agregar" />
+		<input type= "hidden" name= "op" value= "agregar"/>
 		<label for = "nombre">Nombre del Autor: </label>
 		<input type="text"  id= "nombre" name= "nombre" placeholder= "Nombre del Autor"/><br>
 		<label for= "nacionalidad">Nacionalidad: </label>

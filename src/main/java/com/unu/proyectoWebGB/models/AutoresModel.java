@@ -74,6 +74,7 @@ public class AutoresModel extends Conexion{
 			rs = cs.executeQuery();
 			if (rs.next()) {
 				Autor a = new Autor();
+				a.setIdAutor(id);
 				a.setNombre(rs.getString("nombre_autor"));
 				a.setNacinalidad(rs.getString("nacionalidad"));
 				this.cerrarConexion();
@@ -93,14 +94,34 @@ public class AutoresModel extends Conexion{
 			String sql = "CALL sp_modificarAutor(?,?,?)";
 			this.abrirConexion();
 			cs = connection.prepareCall(sql);
+			System.out.println("prueba; "+autor.getIdAutor());
 			cs.setInt(1,autor.getIdAutor());
 			cs.setString(2, autor.getNombre());
 			cs.setString(3, autor.getNacinalidad());
 			filas = cs.executeUpdate();
 			this.cerrarConexion();
-			return filas;
 		}catch (SQLException e) {
-			Logger.getLogger(AutoresModel.class.getName()).log(Level.SEVERE, null, e);;
+			Logger.getLogger(AutoresModel.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
+			this.cerrarConexion();
+			return 0;
+		}
+		return filas;
+	}
+	
+	public int eliminarAutor (int id) {
+	 int filasAfectadas;
+		 try {
+			 String sql = "CALL sp_Eliminar(?)";
+			 this.abrirConexion();
+			 cs = connection.prepareCall(sql);
+			 cs.setInt(1, id);
+			 filasAfectadas = cs.executeUpdate();
+			 this.cerrarConexion();
+			 return filasAfectadas;
+		 }catch (SQLException e) {
+			Logger.getLogger(AutoresModel.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
 			this.cerrarConexion();
 			return 0;
 		}

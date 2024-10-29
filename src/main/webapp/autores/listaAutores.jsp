@@ -18,8 +18,7 @@
 	<%
 	String url = "http://localhost:8080/Proyecto_webGB/";
 	%>
-	<a href="<%=url%>AutoresController?op=nuevo">Nuevo
-		Autor click</a>
+	<a href="<%=url%>AutoresController?op=nuevo">Nuevo Autor click</a>
 	<table class="table table-borderless" id="tabla">
 		<thead>
 			<tr>
@@ -40,7 +39,9 @@
 				<td><%=autor.getIdAutor()%></td>
 				<td><%=autor.getNombre()%></td>
 				<td><%=autor.getNacinalidad()%></td>
-				<td><a href="<%=url%>AutoresController?op=obtener&id=<%=autor.getIdAutor()%>">Modificar</a></td>
+				<td><button  class="btn btn-outline-primary" onclick="location.href='<%=url%>AutoresController?op=obtener&id=<%=autor.getIdAutor()%>'">Modificar</button><!-- class="btn btn-outline-primary" -->
+					<button class="btn btn-danger" onclick="location.href='<%=url%>AutoresController?op=eliminar&id=<%=autor.getIdAutor()%>'">Eliminar</button><!-- class="btn btn-danger" -->
+				</td>
 			</tr>
 			<%
 			}
