@@ -1,11 +1,6 @@
 package com.unu.proyectoWebGB.util;
 
-import com.unu.proyectoWebGB.beans.Autor;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import com.unu.proyectoWebGB.models.AutoresModel;
-import com.unu.proyectoWebGB.models.Conexion;
+import com.unu.proyectoWebGB.util.*;
 
 public class Help {
 

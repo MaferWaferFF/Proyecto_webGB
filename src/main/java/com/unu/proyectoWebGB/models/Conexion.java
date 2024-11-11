@@ -14,9 +14,6 @@ public class Conexion {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, user, pass);
-			if(connection != null) {
-				System.out.println("Conexion OK");
-			}
 		}catch(ClassNotFoundException | SQLException ex) {
 			ex.printStackTrace();
 		}
